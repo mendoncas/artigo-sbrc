@@ -1,0 +1,35 @@
+[serviceweaver]
+binary = "./onlineboutique"
+rollout = "5m"
+colocate = [
+  [
+    "github.com/ServiceWeaver/onlineboutique/productcatalogservice/T",
+    "github.com/ServiceWeaver/onlineboutique/adservice/T",
+    "github.com/ServiceWeaver/onlineboutique/cartservice/T",
+    "github.com/ServiceWeaver/onlineboutique/cartservice/cartCache",
+    "github.com/ServiceWeaver/onlineboutique/checkoutservice/T",
+    "github.com/ServiceWeaver/onlineboutique/currencyservice/T",
+    "github.com/ServiceWeaver/onlineboutique/emailservice/T",
+    "github.com/ServiceWeaver/onlineboutique/paymentservice/T",
+    "github.com/ServiceWeaver/onlineboutique/recommendationservice/T",
+    "github.com/ServiceWeaver/onlineboutique/shippingservice/T",
+    "github.com/ServiceWeaver/onlineboutique/imageservice/T"
+  ],
+  [
+    "main"
+  ]
+]
+
+[kube]
+listeners.boutique = {public = true}
+image = "ricardocgm/weaver-onlineboutique"
+
+[single]
+listeners.boutique = {address = "localhost:12345"}
+
+[multi]
+listeners.boutique = {address = "localhost:12345"}
+
+[gke]
+regions = ["us-west1"]
+listeners.boutique = {public_hostname = "onlineboutique.example.com"}

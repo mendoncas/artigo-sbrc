@@ -1,0 +1,1793 @@
+# Roles and bindings.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  creationTimestamp: null
+  name: pods-getter
+  namespace: default
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  creationTimestamp: null
+  name: default-pods-getter
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pods-getter
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+
+---
+
+# Deployment for replica set github.com/ServiceWeaver/onlineboutique/paymentservice/T
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-nlineboutique-paymentservice-t-9dbd0dc7-a96bbd63
+  namespace: default
+spec:
+  minReadySeconds: 5
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      depName: onlineboutique-nlineboutique-paymentservice-t-9dbd0dc7-a96bbd63
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        appName: onlineboutique
+        depName: onlineboutique-nlineboutique-paymentservice-t-9dbd0dc7-a96bbd63
+        metrics: onlineboutique
+      namespace: default
+    spec:
+      containers:
+      - args:
+        - babysitter
+        env:
+        - name: SERVICEWEAVER_DEPLOYMENT_CONFIG
+          value: Cp4HCiQ5ZGJkMGRjNy1hMGFjLTRhYTEtOGJjNC05MzY4NzZlZGJjYzYS9QYKDm9ubGluZWJvdXRpcXVlEhYvd2VhdmVyL29ubGluZWJvdXRpcXVlKrcBCjNnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvYWRzZXJ2aWNlL1QKP2dpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVAo5Z2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UCgRtYWluMIDwksvdCDpMCgVtdWx0aRJDW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgYWRkcmVzcyA9ICJsb2NhbGhvc3Q6MTIzNDUiCjp1CgNna2USbnJlZ2lvbnMgPSBbInVzLXdlc3QxIl0KCltsaXN0ZW5lcnNdCiAgW2xpc3RlbmVycy5ib3V0aXF1ZV0KICAgIHB1YmxpY19ob3N0bmFtZSA9ICJvbmxpbmVib3V0aXF1ZS5leGFtcGxlLmNvbSIKOooCCg1zZXJ2aWNld2VhdmVyEvgBYmluYXJ5ID0gIi4vb25saW5lYm91dGlxdWUiCmNvbG9jYXRlID0gW1siZ2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL2Fkc2VydmljZS9UIiwgImdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVCIsICJnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvc2hpcHBpbmdzZXJ2aWNlL1QiLCAibWFpbiJdXQpyb2xsb3V0ID0gIjVtIgo6aQoEa3ViZRJhaW1hZ2UgPSAicmljYXJkb2NnbS93ZWF2ZXItb25saW5lYm91dGlxdWUiCgpbbGlzdGVuZXJzXQogIFtsaXN0ZW5lcnMuYm91dGlxdWVdCiAgICBwdWJsaWMgPSB0cnVlCjpNCgZzaW5nbGUSQ1tsaXN0ZW5lcnNdCiAgW2xpc3RlbmVycy5ib3V0aXF1ZV0KICAgIGFkZHJlc3MgPSAibG9jYWxob3N0OjEyMzQ1IgoSOGdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9wYXltZW50c2VydmljZS9UGjwKOGdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9wYXltZW50c2VydmljZS9UEgAgkE4qB2RlZmF1bHQyNmh0dHA6Ly9vbmxpbmVib3V0aXF1ZS1qYWVnZXItMjg4YmNhMzk6MTQyNjgvYXBpL3RyYWNlcw==
+        image: ricardocgm/weaver-onlineboutique:9dbd0dc7
+        imagePullPolicy: IfNotPresent
+        name: serviceweaver
+        ports:
+        - containerPort: 9090
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        stdin: true
+        tty: true
+status: {}
+
+---
+
+# Autoscaler for replica set github.com/ServiceWeaver/onlineboutique/paymentservice/T
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-hpa-tique-paymentservice-t-9dbd0dc7-0ff3d5b6
+  namespace: default
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: onlineboutique-nlineboutique-paymentservice-t-9dbd0dc7-a96bbd63
+status:
+  currentMetrics: null
+  desiredReplicas: 0
+
+---
+
+# Deployment for replica set github.com/ServiceWeaver/onlineboutique/cartservice/T
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-r-onlineboutique-cartservice-t-9dbd0dc7-3f12d2f5
+  namespace: default
+spec:
+  minReadySeconds: 5
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      depName: onlineboutique-r-onlineboutique-cartservice-t-9dbd0dc7-3f12d2f5
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        appName: onlineboutique
+        depName: onlineboutique-r-onlineboutique-cartservice-t-9dbd0dc7-3f12d2f5
+        metrics: onlineboutique
+      namespace: default
+    spec:
+      containers:
+      - args:
+        - babysitter
+        env:
+        - name: SERVICEWEAVER_DEPLOYMENT_CONFIG
+          value: Cp4HCiQ5ZGJkMGRjNy1hMGFjLTRhYTEtOGJjNC05MzY4NzZlZGJjYzYS9QYKDm9ubGluZWJvdXRpcXVlEhYvd2VhdmVyL29ubGluZWJvdXRpcXVlKrcBCjNnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvYWRzZXJ2aWNlL1QKP2dpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVAo5Z2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UCgRtYWluMIDwksvdCDqKAgoNc2VydmljZXdlYXZlchL4AWJpbmFyeSA9ICIuL29ubGluZWJvdXRpcXVlIgpjb2xvY2F0ZSA9IFtbImdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9hZHNlcnZpY2UvVCIsICJnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvcmVjb21tZW5kYXRpb25zZXJ2aWNlL1QiLCAiZ2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UIiwgIm1haW4iXV0Kcm9sbG91dCA9ICI1bSIKOmkKBGt1YmUSYWltYWdlID0gInJpY2FyZG9jZ20vd2VhdmVyLW9ubGluZWJvdXRpcXVlIgoKW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgcHVibGljID0gdHJ1ZQo6TQoGc2luZ2xlEkNbbGlzdGVuZXJzXQogIFtsaXN0ZW5lcnMuYm91dGlxdWVdCiAgICBhZGRyZXNzID0gImxvY2FsaG9zdDoxMjM0NSIKOkwKBW11bHRpEkNbbGlzdGVuZXJzXQogIFtsaXN0ZW5lcnMuYm91dGlxdWVdCiAgICBhZGRyZXNzID0gImxvY2FsaG9zdDoxMjM0NSIKOnUKA2drZRJucmVnaW9ucyA9IFsidXMtd2VzdDEiXQoKW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgcHVibGljX2hvc3RuYW1lID0gIm9ubGluZWJvdXRpcXVlLmV4YW1wbGUuY29tIgoSNWdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9jYXJ0c2VydmljZS9UGjkKNWdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9jYXJ0c2VydmljZS9UEgAgkE4qB2RlZmF1bHQyNmh0dHA6Ly9vbmxpbmVib3V0aXF1ZS1qYWVnZXItMjg4YmNhMzk6MTQyNjgvYXBpL3RyYWNlcw==
+        image: ricardocgm/weaver-onlineboutique:9dbd0dc7
+        imagePullPolicy: IfNotPresent
+        name: serviceweaver
+        ports:
+        - containerPort: 9090
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        stdin: true
+        tty: true
+status: {}
+
+---
+
+# Autoscaler for replica set github.com/ServiceWeaver/onlineboutique/cartservice/T
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-hpa-boutique-cartservice-t-9dbd0dc7-f0748fa7
+  namespace: default
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: onlineboutique-r-onlineboutique-cartservice-t-9dbd0dc7-3f12d2f5
+status:
+  currentMetrics: null
+  desiredReplicas: 0
+
+---
+
+# Deployment for replica set github.com/ServiceWeaver/onlineboutique/productcatalogservice/T
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-utique-productcatalogservice-t-9dbd0dc7-6cf8d0df
+  namespace: default
+spec:
+  minReadySeconds: 5
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      depName: onlineboutique-utique-productcatalogservice-t-9dbd0dc7-6cf8d0df
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        appName: onlineboutique
+        depName: onlineboutique-utique-productcatalogservice-t-9dbd0dc7-6cf8d0df
+        metrics: onlineboutique
+      namespace: default
+    spec:
+      containers:
+      - args:
+        - babysitter
+        env:
+        - name: SERVICEWEAVER_DEPLOYMENT_CONFIG
+          value: Cp4HCiQ5ZGJkMGRjNy1hMGFjLTRhYTEtOGJjNC05MzY4NzZlZGJjYzYS9QYKDm9ubGluZWJvdXRpcXVlEhYvd2VhdmVyL29ubGluZWJvdXRpcXVlKrcBCjNnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvYWRzZXJ2aWNlL1QKP2dpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVAo5Z2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UCgRtYWluMIDwksvdCDpMCgVtdWx0aRJDW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgYWRkcmVzcyA9ICJsb2NhbGhvc3Q6MTIzNDUiCjp1CgNna2USbnJlZ2lvbnMgPSBbInVzLXdlc3QxIl0KCltsaXN0ZW5lcnNdCiAgW2xpc3RlbmVycy5ib3V0aXF1ZV0KICAgIHB1YmxpY19ob3N0bmFtZSA9ICJvbmxpbmVib3V0aXF1ZS5leGFtcGxlLmNvbSIKOooCCg1zZXJ2aWNld2VhdmVyEvgBYmluYXJ5ID0gIi4vb25saW5lYm91dGlxdWUiCmNvbG9jYXRlID0gW1siZ2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL2Fkc2VydmljZS9UIiwgImdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVCIsICJnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvc2hpcHBpbmdzZXJ2aWNlL1QiLCAibWFpbiJdXQpyb2xsb3V0ID0gIjVtIgo6aQoEa3ViZRJhaW1hZ2UgPSAicmljYXJkb2NnbS93ZWF2ZXItb25saW5lYm91dGlxdWUiCgpbbGlzdGVuZXJzXQogIFtsaXN0ZW5lcnMuYm91dGlxdWVdCiAgICBwdWJsaWMgPSB0cnVlCjpNCgZzaW5nbGUSQ1tsaXN0ZW5lcnNdCiAgW2xpc3RlbmVycy5ib3V0aXF1ZV0KICAgIGFkZHJlc3MgPSAibG9jYWxob3N0OjEyMzQ1IgoSP2dpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9wcm9kdWN0Y2F0YWxvZ3NlcnZpY2UvVBpDCj9naXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvcHJvZHVjdGNhdGFsb2dzZXJ2aWNlL1QSACCQTioHZGVmYXVsdDI2aHR0cDovL29ubGluZWJvdXRpcXVlLWphZWdlci0yODhiY2EzOToxNDI2OC9hcGkvdHJhY2Vz
+        image: ricardocgm/weaver-onlineboutique:9dbd0dc7
+        imagePullPolicy: IfNotPresent
+        name: serviceweaver
+        ports:
+        - containerPort: 9090
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        stdin: true
+        tty: true
+status: {}
+
+---
+
+# Autoscaler for replica set github.com/ServiceWeaver/onlineboutique/productcatalogservice/T
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-hpa-roductcatalogservice-t-9dbd0dc7-1b953bea
+  namespace: default
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: onlineboutique-utique-productcatalogservice-t-9dbd0dc7-6cf8d0df
+status:
+  currentMetrics: null
+  desiredReplicas: 0
+
+---
+
+# Deployment for replica set github.com/ServiceWeaver/onlineboutique/checkoutservice/T
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-lineboutique-checkoutservice-t-9dbd0dc7-d25b592b
+  namespace: default
+spec:
+  minReadySeconds: 5
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      depName: onlineboutique-lineboutique-checkoutservice-t-9dbd0dc7-d25b592b
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        appName: onlineboutique
+        depName: onlineboutique-lineboutique-checkoutservice-t-9dbd0dc7-d25b592b
+        metrics: onlineboutique
+      namespace: default
+    spec:
+      containers:
+      - args:
+        - babysitter
+        env:
+        - name: SERVICEWEAVER_DEPLOYMENT_CONFIG
+          value: Cp4HCiQ5ZGJkMGRjNy1hMGFjLTRhYTEtOGJjNC05MzY4NzZlZGJjYzYS9QYKDm9ubGluZWJvdXRpcXVlEhYvd2VhdmVyL29ubGluZWJvdXRpcXVlKrcBCjNnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvYWRzZXJ2aWNlL1QKP2dpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVAo5Z2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UCgRtYWluMIDwksvdCDppCgRrdWJlEmFpbWFnZSA9ICJyaWNhcmRvY2dtL3dlYXZlci1vbmxpbmVib3V0aXF1ZSIKCltsaXN0ZW5lcnNdCiAgW2xpc3RlbmVycy5ib3V0aXF1ZV0KICAgIHB1YmxpYyA9IHRydWUKOk0KBnNpbmdsZRJDW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgYWRkcmVzcyA9ICJsb2NhbGhvc3Q6MTIzNDUiCjpMCgVtdWx0aRJDW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgYWRkcmVzcyA9ICJsb2NhbGhvc3Q6MTIzNDUiCjp1CgNna2USbnJlZ2lvbnMgPSBbInVzLXdlc3QxIl0KCltsaXN0ZW5lcnNdCiAgW2xpc3RlbmVycy5ib3V0aXF1ZV0KICAgIHB1YmxpY19ob3N0bmFtZSA9ICJvbmxpbmVib3V0aXF1ZS5leGFtcGxlLmNvbSIKOooCCg1zZXJ2aWNld2VhdmVyEvgBYmluYXJ5ID0gIi4vb25saW5lYm91dGlxdWUiCmNvbG9jYXRlID0gW1siZ2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL2Fkc2VydmljZS9UIiwgImdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVCIsICJnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvc2hpcHBpbmdzZXJ2aWNlL1QiLCAibWFpbiJdXQpyb2xsb3V0ID0gIjVtIgoSOWdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9jaGVja291dHNlcnZpY2UvVBo9CjlnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvY2hlY2tvdXRzZXJ2aWNlL1QSACCQTioHZGVmYXVsdDI2aHR0cDovL29ubGluZWJvdXRpcXVlLWphZWdlci0yODhiY2EzOToxNDI2OC9hcGkvdHJhY2Vz
+        image: ricardocgm/weaver-onlineboutique:9dbd0dc7
+        imagePullPolicy: IfNotPresent
+        name: serviceweaver
+        ports:
+        - containerPort: 9090
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        stdin: true
+        tty: true
+status: {}
+
+---
+
+# Autoscaler for replica set github.com/ServiceWeaver/onlineboutique/checkoutservice/T
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-hpa-ique-checkoutservice-t-9dbd0dc7-ee964fa0
+  namespace: default
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: onlineboutique-lineboutique-checkoutservice-t-9dbd0dc7-d25b592b
+status:
+  currentMetrics: null
+  desiredReplicas: 0
+
+---
+
+# Deployment for replica set github.com/ServiceWeaver/onlineboutique/currencyservice/T
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-lineboutique-currencyservice-t-9dbd0dc7-0f265851
+  namespace: default
+spec:
+  minReadySeconds: 5
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      depName: onlineboutique-lineboutique-currencyservice-t-9dbd0dc7-0f265851
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        appName: onlineboutique
+        depName: onlineboutique-lineboutique-currencyservice-t-9dbd0dc7-0f265851
+        metrics: onlineboutique
+      namespace: default
+    spec:
+      containers:
+      - args:
+        - babysitter
+        env:
+        - name: SERVICEWEAVER_DEPLOYMENT_CONFIG
+          value: Cp4HCiQ5ZGJkMGRjNy1hMGFjLTRhYTEtOGJjNC05MzY4NzZlZGJjYzYS9QYKDm9ubGluZWJvdXRpcXVlEhYvd2VhdmVyL29ubGluZWJvdXRpcXVlKrcBCjNnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvYWRzZXJ2aWNlL1QKP2dpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVAo5Z2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UCgRtYWluMIDwksvdCDqKAgoNc2VydmljZXdlYXZlchL4AWJpbmFyeSA9ICIuL29ubGluZWJvdXRpcXVlIgpjb2xvY2F0ZSA9IFtbImdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9hZHNlcnZpY2UvVCIsICJnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvcmVjb21tZW5kYXRpb25zZXJ2aWNlL1QiLCAiZ2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UIiwgIm1haW4iXV0Kcm9sbG91dCA9ICI1bSIKOmkKBGt1YmUSYWltYWdlID0gInJpY2FyZG9jZ20vd2VhdmVyLW9ubGluZWJvdXRpcXVlIgoKW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgcHVibGljID0gdHJ1ZQo6TQoGc2luZ2xlEkNbbGlzdGVuZXJzXQogIFtsaXN0ZW5lcnMuYm91dGlxdWVdCiAgICBhZGRyZXNzID0gImxvY2FsaG9zdDoxMjM0NSIKOkwKBW11bHRpEkNbbGlzdGVuZXJzXQogIFtsaXN0ZW5lcnMuYm91dGlxdWVdCiAgICBhZGRyZXNzID0gImxvY2FsaG9zdDoxMjM0NSIKOnUKA2drZRJucmVnaW9ucyA9IFsidXMtd2VzdDEiXQoKW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgcHVibGljX2hvc3RuYW1lID0gIm9ubGluZWJvdXRpcXVlLmV4YW1wbGUuY29tIgoSOWdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9jdXJyZW5jeXNlcnZpY2UvVBo9CjlnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvY3VycmVuY3lzZXJ2aWNlL1QSACCQTioHZGVmYXVsdDI2aHR0cDovL29ubGluZWJvdXRpcXVlLWphZWdlci0yODhiY2EzOToxNDI2OC9hcGkvdHJhY2Vz
+        image: ricardocgm/weaver-onlineboutique:9dbd0dc7
+        imagePullPolicy: IfNotPresent
+        name: serviceweaver
+        ports:
+        - containerPort: 9090
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        stdin: true
+        tty: true
+status: {}
+
+---
+
+# Autoscaler for replica set github.com/ServiceWeaver/onlineboutique/currencyservice/T
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-hpa-ique-currencyservice-t-9dbd0dc7-a2da375f
+  namespace: default
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: onlineboutique-lineboutique-currencyservice-t-9dbd0dc7-0f265851
+status:
+  currentMetrics: null
+  desiredReplicas: 0
+
+---
+
+# Deployment for replica set github.com/ServiceWeaver/onlineboutique/emailservice/T
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-onlineboutique-emailservice-t-9dbd0dc7-44846d2c
+  namespace: default
+spec:
+  minReadySeconds: 5
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      depName: onlineboutique-onlineboutique-emailservice-t-9dbd0dc7-44846d2c
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        appName: onlineboutique
+        depName: onlineboutique-onlineboutique-emailservice-t-9dbd0dc7-44846d2c
+        metrics: onlineboutique
+      namespace: default
+    spec:
+      containers:
+      - args:
+        - babysitter
+        env:
+        - name: SERVICEWEAVER_DEPLOYMENT_CONFIG
+          value: Cp4HCiQ5ZGJkMGRjNy1hMGFjLTRhYTEtOGJjNC05MzY4NzZlZGJjYzYS9QYKDm9ubGluZWJvdXRpcXVlEhYvd2VhdmVyL29ubGluZWJvdXRpcXVlKrcBCjNnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvYWRzZXJ2aWNlL1QKP2dpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVAo5Z2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UCgRtYWluMIDwksvdCDpNCgZzaW5nbGUSQ1tsaXN0ZW5lcnNdCiAgW2xpc3RlbmVycy5ib3V0aXF1ZV0KICAgIGFkZHJlc3MgPSAibG9jYWxob3N0OjEyMzQ1Igo6TAoFbXVsdGkSQ1tsaXN0ZW5lcnNdCiAgW2xpc3RlbmVycy5ib3V0aXF1ZV0KICAgIGFkZHJlc3MgPSAibG9jYWxob3N0OjEyMzQ1Igo6dQoDZ2tlEm5yZWdpb25zID0gWyJ1cy13ZXN0MSJdCgpbbGlzdGVuZXJzXQogIFtsaXN0ZW5lcnMuYm91dGlxdWVdCiAgICBwdWJsaWNfaG9zdG5hbWUgPSAib25saW5lYm91dGlxdWUuZXhhbXBsZS5jb20iCjqKAgoNc2VydmljZXdlYXZlchL4AWJpbmFyeSA9ICIuL29ubGluZWJvdXRpcXVlIgpjb2xvY2F0ZSA9IFtbImdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9hZHNlcnZpY2UvVCIsICJnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvcmVjb21tZW5kYXRpb25zZXJ2aWNlL1QiLCAiZ2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UIiwgIm1haW4iXV0Kcm9sbG91dCA9ICI1bSIKOmkKBGt1YmUSYWltYWdlID0gInJpY2FyZG9jZ20vd2VhdmVyLW9ubGluZWJvdXRpcXVlIgoKW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgcHVibGljID0gdHJ1ZQoSNmdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9lbWFpbHNlcnZpY2UvVBo6CjZnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvZW1haWxzZXJ2aWNlL1QSACCQTioHZGVmYXVsdDI2aHR0cDovL29ubGluZWJvdXRpcXVlLWphZWdlci0yODhiY2EzOToxNDI2OC9hcGkvdHJhY2Vz
+        image: ricardocgm/weaver-onlineboutique:9dbd0dc7
+        imagePullPolicy: IfNotPresent
+        name: serviceweaver
+        ports:
+        - containerPort: 9090
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        stdin: true
+        tty: true
+status: {}
+
+---
+
+# Autoscaler for replica set github.com/ServiceWeaver/onlineboutique/emailservice/T
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-hpa-outique-emailservice-t-9dbd0dc7-e936c57e
+  namespace: default
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: onlineboutique-onlineboutique-emailservice-t-9dbd0dc7-44846d2c
+status:
+  currentMetrics: null
+  desiredReplicas: 0
+
+---
+
+# Deployment for replica set github.com/ServiceWeaver/onlineboutique/adservice/T
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-ver-onlineboutique-adservice-t-9dbd0dc7-7b5e2985
+  namespace: default
+spec:
+  minReadySeconds: 5
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      depName: onlineboutique-ver-onlineboutique-adservice-t-9dbd0dc7-7b5e2985
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        appName: onlineboutique
+        depName: onlineboutique-ver-onlineboutique-adservice-t-9dbd0dc7-7b5e2985
+        metrics: onlineboutique
+      namespace: default
+    spec:
+      containers:
+      - args:
+        - babysitter
+        env:
+        - name: SERVICEWEAVER_DEPLOYMENT_CONFIG
+          value: Cp4HCiQ5ZGJkMGRjNy1hMGFjLTRhYTEtOGJjNC05MzY4NzZlZGJjYzYS9QYKDm9ubGluZWJvdXRpcXVlEhYvd2VhdmVyL29ubGluZWJvdXRpcXVlKrcBCjNnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvYWRzZXJ2aWNlL1QKP2dpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVAo5Z2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UCgRtYWluMIDwksvdCDppCgRrdWJlEmFpbWFnZSA9ICJyaWNhcmRvY2dtL3dlYXZlci1vbmxpbmVib3V0aXF1ZSIKCltsaXN0ZW5lcnNdCiAgW2xpc3RlbmVycy5ib3V0aXF1ZV0KICAgIHB1YmxpYyA9IHRydWUKOk0KBnNpbmdsZRJDW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgYWRkcmVzcyA9ICJsb2NhbGhvc3Q6MTIzNDUiCjpMCgVtdWx0aRJDW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgYWRkcmVzcyA9ICJsb2NhbGhvc3Q6MTIzNDUiCjp1CgNna2USbnJlZ2lvbnMgPSBbInVzLXdlc3QxIl0KCltsaXN0ZW5lcnNdCiAgW2xpc3RlbmVycy5ib3V0aXF1ZV0KICAgIHB1YmxpY19ob3N0bmFtZSA9ICJvbmxpbmVib3V0aXF1ZS5leGFtcGxlLmNvbSIKOooCCg1zZXJ2aWNld2VhdmVyEvgBYmluYXJ5ID0gIi4vb25saW5lYm91dGlxdWUiCmNvbG9jYXRlID0gW1siZ2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL2Fkc2VydmljZS9UIiwgImdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVCIsICJnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvc2hpcHBpbmdzZXJ2aWNlL1QiLCAibWFpbiJdXQpyb2xsb3V0ID0gIjVtIgoSM2dpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9hZHNlcnZpY2UvVBo3CjNnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvYWRzZXJ2aWNlL1QSABpDCj9naXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvcmVjb21tZW5kYXRpb25zZXJ2aWNlL1QSABo9CjlnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvc2hpcHBpbmdzZXJ2aWNlL1QSACCQTioHZGVmYXVsdDI2aHR0cDovL29ubGluZWJvdXRpcXVlLWphZWdlci0yODhiY2EzOToxNDI2OC9hcGkvdHJhY2Vz
+        image: ricardocgm/weaver-onlineboutique:9dbd0dc7
+        imagePullPolicy: IfNotPresent
+        name: serviceweaver
+        ports:
+        - containerPort: 9090
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        stdin: true
+        tty: true
+status: {}
+
+---
+
+# Autoscaler for replica set github.com/ServiceWeaver/onlineboutique/adservice/T
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-hpa-neboutique-adservice-t-9dbd0dc7-d5ef333d
+  namespace: default
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: onlineboutique-ver-onlineboutique-adservice-t-9dbd0dc7-7b5e2985
+status:
+  currentMetrics: null
+  desiredReplicas: 0
+
+---
+
+# Deployment for replica set github.com/ServiceWeaver/weaver/Main
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-github-com-serviceweaver-weaver-main-dfbca204
+  namespace: default
+spec:
+  minReadySeconds: 5
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      globalName: onlineboutique-github-com-serviceweaver-weaver-main-dfbca204
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        appName: onlineboutique
+        depName: onlineboutique-com-serviceweaver-weaver-main-9dbd0dc7-095234a6
+        globalName: onlineboutique-github-com-serviceweaver-weaver-main-dfbca204
+        metrics: onlineboutique
+      namespace: default
+    spec:
+      nodeName: minikube
+      containers:
+      - args:
+        - babysitter
+        env:
+        - name: SERVICEWEAVER_DEPLOYMENT_CONFIG
+          value: Cp4HCiQ5ZGJkMGRjNy1hMGFjLTRhYTEtOGJjNC05MzY4NzZlZGJjYzYS9QYKDm9ubGluZWJvdXRpcXVlEhYvd2VhdmVyL29ubGluZWJvdXRpcXVlKrcBCjNnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvYWRzZXJ2aWNlL1QKP2dpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVAo5Z2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UCgRtYWluMIDwksvdCDqKAgoNc2VydmljZXdlYXZlchL4AWJpbmFyeSA9ICIuL29ubGluZWJvdXRpcXVlIgpjb2xvY2F0ZSA9IFtbImdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9hZHNlcnZpY2UvVCIsICJnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvcmVjb21tZW5kYXRpb25zZXJ2aWNlL1QiLCAiZ2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UIiwgIm1haW4iXV0Kcm9sbG91dCA9ICI1bSIKOmkKBGt1YmUSYWltYWdlID0gInJpY2FyZG9jZ20vd2VhdmVyLW9ubGluZWJvdXRpcXVlIgoKW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgcHVibGljID0gdHJ1ZQo6TQoGc2luZ2xlEkNbbGlzdGVuZXJzXQogIFtsaXN0ZW5lcnMuYm91dGlxdWVdCiAgICBhZGRyZXNzID0gImxvY2FsaG9zdDoxMjM0NSIKOkwKBW11bHRpEkNbbGlzdGVuZXJzXQogIFtsaXN0ZW5lcnMuYm91dGlxdWVdCiAgICBhZGRyZXNzID0gImxvY2FsaG9zdDoxMjM0NSIKOnUKA2drZRJucmVnaW9ucyA9IFsidXMtd2VzdDEiXQoKW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgcHVibGljX2hvc3RuYW1lID0gIm9ubGluZWJvdXRpcXVlLmV4YW1wbGUuY29tIgoSJGdpdGh1Yi5jb20vU2VydmljZVdlYXZlci93ZWF2ZXIvTWFpbho6CiRnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvd2VhdmVyL01haW4SEgoQCghib3V0aXF1ZRCgnAEYASCQTioHZGVmYXVsdDI2aHR0cDovL29ubGluZWJvdXRpcXVlLWphZWdlci0yODhiY2EzOToxNDI2OC9hcGkvdHJhY2Vz
+        image: ricardocgm/weaver-onlineboutique:9dbd0dc7
+        imagePullPolicy: IfNotPresent
+        name: serviceweaver
+        ports:
+        - containerPort: 9090
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        stdin: true
+        tty: true
+status: {}
+
+---
+
+# Autoscaler for replica set github.com/ServiceWeaver/weaver/Main
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-hpa-viceweaver-weaver-main-9dbd0dc7-aa823650
+  namespace: default
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: onlineboutique-github-com-serviceweaver-weaver-main-dfbca204
+status:
+  currentMetrics: null
+  desiredReplicas: 0
+
+---
+
+# Listener Service for replica set github.com/ServiceWeaver/weaver/Main
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    lisName: boutique
+  name: onlineboutique-lis-boutique-b6f227cf
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 20000
+  selector:
+    globalName: onlineboutique-github-com-serviceweaver-weaver-main-dfbca204
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+
+---
+
+# Deployment for replica set github.com/ServiceWeaver/onlineboutique/imageservice/T
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-onlineboutique-imageservice-t-9dbd0dc7-90c04f4f
+  namespace: default
+spec:
+  minReadySeconds: 5
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      depName: onlineboutique-onlineboutique-imageservice-t-9dbd0dc7-90c04f4f
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        appName: onlineboutique
+        depName: onlineboutique-onlineboutique-imageservice-t-9dbd0dc7-90c04f4f
+        metrics: onlineboutique
+      namespace: default
+    spec:
+      containers:
+      - args:
+        - babysitter
+        env:
+        - name: SERVICEWEAVER_DEPLOYMENT_CONFIG
+          value: Cp4HCiQ5ZGJkMGRjNy1hMGFjLTRhYTEtOGJjNC05MzY4NzZlZGJjYzYS9QYKDm9ubGluZWJvdXRpcXVlEhYvd2VhdmVyL29ubGluZWJvdXRpcXVlKrcBCjNnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvYWRzZXJ2aWNlL1QKP2dpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVAo5Z2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UCgRtYWluMIDwksvdCDqKAgoNc2VydmljZXdlYXZlchL4AWJpbmFyeSA9ICIuL29ubGluZWJvdXRpcXVlIgpjb2xvY2F0ZSA9IFtbImdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9hZHNlcnZpY2UvVCIsICJnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvcmVjb21tZW5kYXRpb25zZXJ2aWNlL1QiLCAiZ2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UIiwgIm1haW4iXV0Kcm9sbG91dCA9ICI1bSIKOmkKBGt1YmUSYWltYWdlID0gInJpY2FyZG9jZ20vd2VhdmVyLW9ubGluZWJvdXRpcXVlIgoKW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgcHVibGljID0gdHJ1ZQo6TQoGc2luZ2xlEkNbbGlzdGVuZXJzXQogIFtsaXN0ZW5lcnMuYm91dGlxdWVdCiAgICBhZGRyZXNzID0gImxvY2FsaG9zdDoxMjM0NSIKOkwKBW11bHRpEkNbbGlzdGVuZXJzXQogIFtsaXN0ZW5lcnMuYm91dGlxdWVdCiAgICBhZGRyZXNzID0gImxvY2FsaG9zdDoxMjM0NSIKOnUKA2drZRJucmVnaW9ucyA9IFsidXMtd2VzdDEiXQoKW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgcHVibGljX2hvc3RuYW1lID0gIm9ubGluZWJvdXRpcXVlLmV4YW1wbGUuY29tIgoSNmdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9pbWFnZXNlcnZpY2UvVBo6CjZnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvaW1hZ2VzZXJ2aWNlL1QSACCQTioHZGVmYXVsdDI2aHR0cDovL29ubGluZWJvdXRpcXVlLWphZWdlci0yODhiY2EzOToxNDI2OC9hcGkvdHJhY2Vz
+        image: ricardocgm/weaver-onlineboutique:9dbd0dc7
+        imagePullPolicy: IfNotPresent
+        name: serviceweaver
+        ports:
+        - containerPort: 9090
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        stdin: true
+        tty: true
+status: {}
+
+---
+
+# Autoscaler for replica set github.com/ServiceWeaver/onlineboutique/imageservice/T
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-hpa-outique-imageservice-t-9dbd0dc7-21cb7cc8
+  namespace: default
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: onlineboutique-onlineboutique-imageservice-t-9dbd0dc7-90c04f4f
+status:
+  currentMetrics: null
+  desiredReplicas: 0
+
+---
+
+# Deployment for replica set github.com/ServiceWeaver/onlineboutique/cartservice/cartCache
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-boutique-cartservice-cartcache-9dbd0dc7-f9b034cd
+  namespace: default
+spec:
+  minReadySeconds: 5
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      depName: onlineboutique-boutique-cartservice-cartcache-9dbd0dc7-f9b034cd
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        appName: onlineboutique
+        depName: onlineboutique-boutique-cartservice-cartcache-9dbd0dc7-f9b034cd
+        metrics: onlineboutique
+      namespace: default
+    spec:
+      containers:
+      - args:
+        - babysitter
+        env:
+        - name: SERVICEWEAVER_DEPLOYMENT_CONFIG
+          value: Cp4HCiQ5ZGJkMGRjNy1hMGFjLTRhYTEtOGJjNC05MzY4NzZlZGJjYzYS9QYKDm9ubGluZWJvdXRpcXVlEhYvd2VhdmVyL29ubGluZWJvdXRpcXVlKrcBCjNnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvYWRzZXJ2aWNlL1QKP2dpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9yZWNvbW1lbmRhdGlvbnNlcnZpY2UvVAo5Z2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UCgRtYWluMIDwksvdCDpNCgZzaW5nbGUSQ1tsaXN0ZW5lcnNdCiAgW2xpc3RlbmVycy5ib3V0aXF1ZV0KICAgIGFkZHJlc3MgPSAibG9jYWxob3N0OjEyMzQ1Igo6TAoFbXVsdGkSQ1tsaXN0ZW5lcnNdCiAgW2xpc3RlbmVycy5ib3V0aXF1ZV0KICAgIGFkZHJlc3MgPSAibG9jYWxob3N0OjEyMzQ1Igo6dQoDZ2tlEm5yZWdpb25zID0gWyJ1cy13ZXN0MSJdCgpbbGlzdGVuZXJzXQogIFtsaXN0ZW5lcnMuYm91dGlxdWVdCiAgICBwdWJsaWNfaG9zdG5hbWUgPSAib25saW5lYm91dGlxdWUuZXhhbXBsZS5jb20iCjqKAgoNc2VydmljZXdlYXZlchL4AWJpbmFyeSA9ICIuL29ubGluZWJvdXRpcXVlIgpjb2xvY2F0ZSA9IFtbImdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9hZHNlcnZpY2UvVCIsICJnaXRodWIuY29tL1NlcnZpY2VXZWF2ZXIvb25saW5lYm91dGlxdWUvcmVjb21tZW5kYXRpb25zZXJ2aWNlL1QiLCAiZ2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL3NoaXBwaW5nc2VydmljZS9UIiwgIm1haW4iXV0Kcm9sbG91dCA9ICI1bSIKOmkKBGt1YmUSYWltYWdlID0gInJpY2FyZG9jZ20vd2VhdmVyLW9ubGluZWJvdXRpcXVlIgoKW2xpc3RlbmVyc10KICBbbGlzdGVuZXJzLmJvdXRpcXVlXQogICAgcHVibGljID0gdHJ1ZQoSPWdpdGh1Yi5jb20vU2VydmljZVdlYXZlci9vbmxpbmVib3V0aXF1ZS9jYXJ0c2VydmljZS9jYXJ0Q2FjaGUaQQo9Z2l0aHViLmNvbS9TZXJ2aWNlV2VhdmVyL29ubGluZWJvdXRpcXVlL2NhcnRzZXJ2aWNlL2NhcnRDYWNoZRIAIJBOKgdkZWZhdWx0MjZodHRwOi8vb25saW5lYm91dGlxdWUtamFlZ2VyLTI4OGJjYTM5OjE0MjY4L2FwaS90cmFjZXM=
+        image: ricardocgm/weaver-onlineboutique:9dbd0dc7
+        imagePullPolicy: IfNotPresent
+        name: serviceweaver
+        ports:
+        - containerPort: 9090
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        stdin: true
+        tty: true
+status: {}
+
+---
+
+# Autoscaler for replica set github.com/ServiceWeaver/onlineboutique/cartservice/cartCache
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-hpa-cartservice-cartcache-9dbd0dc7-079b2309
+  namespace: default
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: onlineboutique-boutique-cartservice-cartcache-9dbd0dc7-f9b034cd
+status:
+  currentMetrics: null
+  desiredReplicas: 0
+
+---
+
+# Jaeger Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-jaeger-288bca39
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      jaeger: onlineboutique-jaeger-288bca39
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        jaeger: onlineboutique-jaeger-288bca39
+      namespace: default
+    spec:
+      containers:
+      - image: jaegertracing/all-in-one:latest
+        imagePullPolicy: IfNotPresent
+        name: onlineboutique-jaeger-288bca39
+        resources: {}
+status: {}
+
+---
+
+# Jaeger Service
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-jaeger-288bca39
+  namespace: default
+spec:
+  ports:
+  - name: ui-port
+    port: 16686
+    protocol: TCP
+    targetPort: 16686
+  - name: collector-port
+    port: 14268
+    protocol: TCP
+    targetPort: 14268
+  selector:
+    jaeger: onlineboutique-jaeger-288bca39
+status:
+  loadBalancer: {}
+
+---
+
+# Config Map onlineboutique-prometheus-config-9f631fd9
+apiVersion: v1
+data:
+  prometheus.yaml: |2
+
+    global:
+      scrape_interval: 15s
+    scrape_configs:
+      - job_name: "onlineboutique-prometheus-9fafee08"
+        metrics_path: /metrics
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              names:
+                - default
+        scheme: http
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_label_metrics]
+            regex: "onlineboutique"
+            action: keep
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-prometheus-config-9f631fd9
+  namespace: default
+
+---
+
+# Prometheus Deployment onlineboutique-prometheus-9fafee08
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-prometheus-9fafee08
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      prometheus: onlineboutique-prometheus-9fafee08
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        prometheus: onlineboutique-prometheus-9fafee08
+      namespace: default
+    spec:
+      containers:
+      - args:
+        - --config.file=/etc/onlineboutique-prometheus-9fafee08/prometheus.yaml
+        - --storage.tsdb.path=/onlineboutique-prometheus-9fafee08
+        image: prom/prometheus:v2.30.3
+        imagePullPolicy: IfNotPresent
+        name: onlineboutique-prometheus-9fafee08
+        ports:
+        - containerPort: 9090
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/onlineboutique-prometheus-9fafee08/prometheus.yaml
+          name: onlineboutique-prometheus-config-9f631fd9
+          subPath: prometheus.yaml
+        - mountPath: /onlineboutique-prometheus-9fafee08
+          name: onlineboutique-prometheus-9fafee08-data
+      volumes:
+      - configMap:
+          items:
+          - key: prometheus.yaml
+            path: prometheus.yaml
+          name: onlineboutique-prometheus-config-9f631fd9
+        name: onlineboutique-prometheus-config-9f631fd9
+      - name: onlineboutique-prometheus-9fafee08-data
+status: {}
+
+---
+
+# Prometheus Service onlineboutique-prometheus-9fafee08
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-prometheus-9fafee08
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 9090
+  selector:
+    prometheus: onlineboutique-prometheus-9fafee08
+status:
+  loadBalancer: {}
+
+---
+
+# Config Map onlineboutique-loki-config-4b13c7c3
+apiVersion: v1
+data:
+  loki.yaml: |2
+
+    auth_enabled: false
+    server:
+      http_listen_port: 3100
+
+    common:
+      instance_addr: 127.0.0.1
+      path_prefix: /tmp/onlineboutique-loki-ccba14cc
+      storage:
+        filesystem:
+          chunks_directory: /tmp/onlineboutique-loki-ccba14cc/chunks
+          rules_directory: /tmp/onlineboutique-loki-ccba14cc/rules
+      replication_factor: 1
+      ring:
+        kvstore:
+          store: inmemory
+
+    schema_config:
+      configs:
+        - from: 2023-12-03  # Marks the starting point of this schema
+          store: boltdb-shipper
+          object_store: filesystem
+          schema: v11
+          index:
+            prefix: index_
+            period: 24h
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-loki-config-4b13c7c3
+  namespace: default
+
+---
+
+# Config Map onlineboutique-promtail-d9a077a9
+apiVersion: v1
+data:
+  promtail.yaml: |2
+
+    server:
+      log_format: logfmt
+      http_listen_port: 3101
+
+    clients:
+      - url: http://onlineboutique-loki-ccba14cc:3100/loki/api/v1/push
+
+    positions:
+      filename: /run/promtail/positions.yaml
+
+    scrape_configs:
+      - job_name: kubernetes-pods
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              names:
+                - default
+        relabel_configs:
+          - source_labels:
+              - __meta_kubernetes_pod_label_appName
+            regex: ^.*onlineboutique.*$
+            action: keep
+          - source_labels:
+              - __meta_kubernetes_pod_label_appName
+            action: replace
+            target_label: app
+          - source_labels:
+              - __meta_kubernetes_pod_name
+            action: replace
+            target_label: pod
+          - action: replace
+            replacement: /var/log/pods/*$1/*.log
+            separator: /
+            source_labels:
+            - __meta_kubernetes_pod_uid
+            - __meta_kubernetes_pod_container_name
+            target_label: __path__
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-promtail-d9a077a9
+  namespace: default
+
+---
+
+# Loki Deployment onlineboutique-loki-ccba14cc
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-loki-ccba14cc
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      loki: onlineboutique-loki-ccba14cc
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        loki: onlineboutique-loki-ccba14cc
+      namespace: default
+    spec:
+      containers:
+      - args:
+        - --config.file=/etc/onlineboutique-loki-ccba14cc/loki.yaml
+        image: grafana/loki:latest
+        imagePullPolicy: IfNotPresent
+        name: onlineboutique-loki-ccba14cc
+        ports:
+        - containerPort: 3100
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/onlineboutique-loki-ccba14cc/
+          name: onlineboutique-loki-config-4b13c7c3
+      volumes:
+      - configMap:
+          items:
+          - key: loki.yaml
+            path: loki.yaml
+          name: onlineboutique-loki-config-4b13c7c3
+        name: onlineboutique-loki-config-4b13c7c3
+status: {}
+
+---
+
+# Loki Service onlineboutique-loki-ccba14cc
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-loki-ccba14cc
+  namespace: default
+spec:
+  ports:
+  - port: 3100
+    protocol: TCP
+    targetPort: 3100
+  selector:
+    loki: onlineboutique-loki-ccba14cc
+status:
+  loadBalancer: {}
+
+---
+
+# Promtail DaemonSet onlineboutique-promtail-d9a077a9
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-promtail-d9a077a9
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      promtail: onlineboutique-promtail-d9a077a9
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        promtail: onlineboutique-promtail-d9a077a9
+      namespace: default
+    spec:
+      containers:
+      - args:
+        - --config.file=/etc/onlineboutique-promtail-d9a077a9/promtail.yaml
+        env:
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        image: grafana/promtail:latest
+        imagePullPolicy: IfNotPresent
+        name: onlineboutique-promtail-d9a077a9
+        ports:
+        - containerPort: 3101
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/onlineboutique-promtail-d9a077a9
+          name: config
+        - mountPath: /run/promtail
+          name: run
+        - mountPath: /var/lib/docker/containers
+          name: containers
+          readOnly: true
+        - mountPath: /var/log/pods
+          name: pods
+          readOnly: true
+      serviceAccountName: default
+      volumes:
+      - configMap:
+          items:
+          - key: promtail.yaml
+            path: promtail.yaml
+          name: onlineboutique-promtail-d9a077a9
+        name: config
+      - hostPath:
+          path: /run/promtail
+        name: run
+      - hostPath:
+          path: /var/lib/docker/containers
+        name: containers
+      - hostPath:
+          path: /var/log/pods
+        name: pods
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+status:
+  currentNumberScheduled: 0
+  desiredNumberScheduled: 0
+  numberMisscheduled: 0
+  numberReady: 0
+
+---
+
+# Config Map onlineboutique-grafana-config-9bf239f3
+apiVersion: v1
+data:
+  dashboard-config.yaml: |2
+
+    apiVersion: 1
+    providers:
+     - name: 'Service Weaver Dashboard'
+       options:
+         path: /etc/grafana/dashboards/default-dashboard.json
+  default-dashboard.json: |
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "description": "Basic Service Weaver dashboard",
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": 1,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 7,
+          "panels": [],
+          "title": "Metrics",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "gridPos": {
+            "h": 40,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "id": 2,
+          "options": {
+            "dedupStrategy": "none",
+            "enableLogDetails": true,
+            "prettifyLogMessage": false,
+            "showCommonLabels": false,
+            "showLabels": false,
+            "showTime": false,
+            "sortOrder": "Descending",
+            "wrapLogMessage": false
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "editorMode": "builder",
+              "expr": "{app=\"onlineboutique\"}",
+              "key": "Q-f5ed4dd4-34d6-449d-b547-a020c1407c9d-0",
+              "queryType": "range",
+              "refId": "A"
+            }
+          ],
+          "title": "New Panel",
+          "type": "logs"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "id": 3,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "builder",
+              "expr": "serviceweaver_method_count",
+              "instant": false,
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "# Method Invocations",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 9
+          },
+          "id": 9,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "builder",
+              "expr": "serviceweaver_method_error_count",
+              "instant": false,
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "# Method Invocations with errors",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 17
+          },
+          "id": 10,
+          "options": {
+            "bucketOffset": 0,
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "min",
+                "max",
+                "variance"
+              ],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "builder",
+              "expr": "serviceweaver_method_latency_micros_bucket",
+              "instant": false,
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Distribution of latency (us) of Service Weaver component execution",
+          "type": "histogram"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 25
+          },
+          "id": 4,
+          "options": {
+            "bucketOffset": 0,
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "min",
+                "max",
+                "variance"
+              ],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "builder",
+              "expr": "serviceweaver_method_bytes_request_bucket",
+              "instant": false,
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Distribution of #bytes in Service Weaver component method requests",
+          "type": "histogram"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 33
+          },
+          "id": 8,
+          "options": {
+            "bucketOffset": 0,
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "min",
+                "max",
+                "variance"
+              ],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "builder",
+              "expr": "serviceweaver_method_bytes_reply_bucket",
+              "instant": false,
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Distribution of #bytes in Service Weaver component method replies",
+          "type": "histogram"
+        }
+      ],
+      "refresh": "5s",
+      "schemaVersion": 38,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": []
+      },
+      "time": {
+        "from": "now-1h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "",
+      "title": "Service Weaver",
+      "uid": "c7fcf5e5-00e9-4af5-a246-0eaf3068ac29",
+      "version": 16,
+      "weekStart": ""
+    }
+  grafana.yaml: |2
+
+
+
+
+    apiVersion: 1
+    datasources:
+
+     - name: Jaeger
+       type: jaeger
+       url: http://onlineboutique-jaeger-288bca39:16686
+
+     - name: Prometheus
+       type: prometheus
+       access: proxy
+       url: http://onlineboutique-prometheus-9fafee08
+       isDefault: true
+
+     - name: Loki
+       type: loki
+       access: proxy
+       jsonData:
+         httpHeaderName1: 'X-Scope-OrgID'
+       secureJsonData:
+         httpHeaderValue1: 'customvalue'
+       url: http://onlineboutique-loki-ccba14cc:3100
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-grafana-config-9bf239f3
+  namespace: default
+
+---
+# Grafana Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-grafana-9a55b334
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      grafana: onlineboutique-grafana-9a55b334
+  strategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        grafana: onlineboutique-grafana-9a55b334
+      namespace: default
+    spec:
+      containers:
+      - env:
+        - name: GF_SECURITY_ADMIN_USER
+          value: admin
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          value: admin
+        image: grafana/grafana:latest
+        imagePullPolicy: IfNotPresent
+        name: onlineboutique-grafana-9a55b334
+        ports:
+        - containerPort: 3000
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/grafana/provisioning/datasources/
+          name: datasource-volume
+        - mountPath: /etc/grafana/provisioning/dashboards/
+          name: dashboards-config
+        - mountPath: /etc/grafana/dashboards/
+          name: dashboards
+      volumes:
+      - configMap:
+          items:
+          - key: grafana.yaml
+            path: grafana.yaml
+          name: onlineboutique-grafana-config-9bf239f3
+        name: datasource-volume
+      - configMap:
+          items:
+          - key: dashboard-config.yaml
+            path: dashboard-config.yaml
+          name: onlineboutique-grafana-config-9bf239f3
+        name: dashboards-config
+      - configMap:
+          items:
+          - key: default-dashboard.json
+            path: default-dashboard.json
+          name: onlineboutique-grafana-config-9bf239f3
+        name: dashboards
+status: {}
+
+---
+
+# Grafana Service
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: onlineboutique-grafana-9a55b334
+  namespace: default
+spec:
+  ports:
+  - name: ui-port
+    port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    grafana: onlineboutique-grafana-9a55b334
+status:
+  loadBalancer: {}
+
+---
