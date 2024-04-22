@@ -1,5 +1,5 @@
 # Environment
-Most of the tests were ran on 2-node kubernetes cluster set up with minikube.
+Most of the tests were made on a 2-node kubernetes cluster set up with minikube.
 The scenarios for each test available on this repo can be replicated by applying the scenario yaml file:
 
 ```shell
